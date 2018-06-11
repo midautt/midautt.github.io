@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Something irrelevant">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          Regex basic - Midautt
+        
+    </title>
+
+    <link rel="canonical" href="http://midautt.github.io/2018/06/11/Regex-basic/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('null')
+            /*post*/
+        
+    }
+    
+    #signature{
+        background-image: url('/img/signature/BeanTechSign-white.png');
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#regex" title="regex">regex</a>
+                            
+                        </div>
+                        <h1>Regex basic</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by Thanh Nguyen on
+                            2018-06-11
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Midautt</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h2><span id="điều-gì-khiến-bạn-quan-tâm-tới-regex">Điều gì khiến bạn quan tâm tới Regex</span></h2>
+<p>Regex về cơ bản là một string, <code>abcd</code> là một regex, <code>^\d\d+.*\w+</code> cũng là một regex.</p>
+<p>Regex mô tả một <strong>mẫu</strong> dùng để tìm kiếm đoạn text hoặc một vị trí nào đó trong một đoạn văn bản - có thể ngắn hoặc dài.</p>
+<p>Regex thông thường có bốn công dụng chính: <strong>tìm kiếm</strong> trong một lượng văn bản lớn, <strong>thay thế</strong> hoặc <strong>chèn</strong> đoạn văn bản vào một vị trí nào đó, <strong>kiểm tra</strong> tính đúng đắn của một đoạn văn bản, hoặc để <strong>chia</strong> văn bản hoặc câu thành những phần có cấu trúc định sắn.</p>
+<p>Điều gì làm regex khác biệt với cách tìm kiếm khác ? Đó là khả năng mô tả những mẫu phức tạp.</p>
+<p>Ví dụ khi bạn muốn tìm kiếm tất cả những tệp có phần mở rộng .txt, chúng ta có thể sử dụng lệnh find với wildcard như sau</p>
+<p><code>find . -name &quot;*.txt&quot;</code></p>
+<p>Nhưng kết quả ra quá nhiều, và bạn nhớ thêm rằng tệp mình cần tìm có lẽ chứa từ <strong>system</strong> trong đó, vậy phải làm thế nảo ?</p>
+<p>Trong trường hợp này regex có thể giúp bạn với một pattern đơn giản</p>
+<p><code>find -regex &quot;.*system.*\.txt&quot;</code></p>
+<p>Kết quả thu được sẽ chỉ bao gồm những tệp có phần mở rộng .txt và chứa từ system trong tên. Lúc này có thể bạn chưa hiểu những <code>.*\</code> đóng vai trò gì ở đây, nhưng chỉ cần dành một chút thời gian tìm hiểu bạn sẽ thấy regex không hề khó học nếu như bạn đã từng nghĩ thế.</p>
+<p>Một ví dụ khác về sự mạnh mẽ của regex trong việc thay thế và xứ lý văn bản như sau</p>
+<p>Bạn có một đoạn code chạy trên ngôn ngữ Java và muốn chuyển sang dùng cho Scala, tuy nhiên cú pháp của 2 ngôn ngữ có phần khác biệt</p>
+<p>Ngôn ngữ Java có cú pháp như sau: <code>&lt;type&gt; &lt;name&gt; = &lt;value&gt;</code></p>
+<p>Còn Scala chúng ta dùng: <code>val &lt;name&gt;: &lt;type&gt; = &lt;value&gt;</code></p>
+<p>Ví dụ về syntax của Java</p>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">String </span><span class="built_in">s1</span> = <span class="string">"Computer Science"</span><span class="comment">;</span></span><br><span class="line"><span class="symbol">int</span> x = <span class="number">307</span><span class="comment">;</span></span><br><span class="line"><span class="keyword">String </span><span class="built_in">s2</span> = <span class="built_in">s1</span> + <span class="string">" "</span> + x<span class="comment">;</span></span><br><span class="line"><span class="keyword">String </span><span class="built_in">s3</span> = <span class="built_in">s2</span>.<span class="keyword">substring(10,17);</span></span><br><span class="line"><span class="keyword">String </span><span class="built_in">s4</span> = <span class="string">"is fun"</span><span class="comment">;</span></span><br><span class="line"><span class="keyword">String </span><span class="built_in">s5</span> = <span class="built_in">s2</span> + <span class="built_in">s4</span><span class="comment">;</span></span><br></pre></td></tr></table></figure>
+<p>Làm thế nào để có thể chuyển code của Java về Scala ? Chúng ta có thể Ctrl+X <code>&lt;type&gt;</code>, Ctrl+V nó về phía sau <code>&lt;name&gt;</code>, sau đó gõ thêm dấu <code>:</code></p>
+<p>Và sẽ mất khoảng 10 phút cho việc copy paste với 100 dòng code</p>
+<p>Nếu chúng ta biết regex chúng ta sẽ không phải vất vả như vậy, chỉ cần mở tool replace của editor lên và gõ</p>
+<p><code>(\w+)\s(\w+)\s=</code></p>
+<p>vào ô tìm kiếm, sau đó gõ</p>
+<p><code>val $2: $1 =</code></p>
+<p>vào ô thay thế, bật mode regex lên và ấn <strong>Enter</strong>, đoạn code trên sẽ ngay lập thức thay đổi</p>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">val</span> <span class="built_in">s1</span>: <span class="keyword">String </span>= <span class="string">"Computer Science"</span><span class="comment">;</span></span><br><span class="line"><span class="symbol">val</span> x: int = <span class="number">307</span><span class="comment">;</span></span><br><span class="line"><span class="symbol">val</span> <span class="built_in">s2</span>: <span class="keyword">String </span>= <span class="built_in">s1</span> + <span class="string">" "</span> + x<span class="comment">;</span></span><br><span class="line"><span class="symbol">val</span> <span class="built_in">s3</span>: <span class="keyword">String </span>= <span class="built_in">s2</span>.<span class="keyword">substring(10,17);</span></span><br><span class="line"><span class="keyword">val </span><span class="built_in">s4</span>: <span class="keyword">String </span>= <span class="string">"is fun"</span><span class="comment">;</span></span><br><span class="line"><span class="symbol">val</span> <span class="built_in">s5</span>: <span class="keyword">String </span>= <span class="built_in">s2</span> + <span class="built_in">s4</span><span class="comment">;</span></span><br></pre></td></tr></table></figure>
+<p>và với 100 hay 1000 LOC thì regex của chúng ta vẫn có thể xử lý êm đẹp.</p>
+<p>Những ví dụ trên chúng ta có thể gặp rất nhiều trong công việc thường ngày, và những pattern đó có thể được viết ra hoàn toàn với kiến thức rất cơ bản của regex.</p>
+<p>Làm quen với regex các bạn sẽ tìm thêm rất nhiều ứng dụng của nó trong công việc, nhất là đối với một lập trình viên. Bởi vậy đừng chờ đợi nữa, hãy bắt đầu học regex ngay hôm nay.</p>
+<h2><span id="những-kiến-thức-đầu-tiên-về-regex">Những kiến thức đầu tiên về Regex</span></h2>
+<p><em>Note: regex được viết giữa hai dấu sượt phải <code>/../</code>, chỉ thị <code>g</code> ở cuối tức tìm trên toàn bộ chuỗi mẫu</em></p>
+<h3><span id="các-ký-tự-đơn-giản">Các ký tự đơn giản</span></h3>
+<p>Đầu tiên là regex có thể được sử dụng như một phép tìm kiếm thông thường, chúng ta có thể tìm kiếm hầu hết các ký tự bằng cách gõ chúng vào regex (trừ một vài ký tự đặc biết chúng ta sẽ tìm hiểu tiếp theo).</p>
+<p>VD: tìm tất cả các lần xuất hiện của từ <strong>matching</strong></p>
+<p><code>/matching/g</code></p>
+<blockquote>
+<p>Here is some text to try <strong>matching</strong>. Type any word from this text and it will get matched and highlighted.</p>
+</blockquote>
+<h3><span id="chữ-cái-và-chữ-số">Chữ cái và chữ số</span></h3>
+<p>Trong số các ký tự đặc biệt, <code>\w</code>  và <code>\d</code> được sử dụng phổ biến nhất. <code>\w\</code> đại diện cho tất cả các chữ cái hoặc chữ số latin, <code>\d</code> đại diện cho tất cả chữ số thập phân.</p>
+<p>VD: tìm tất cả các chữ số và chữ cái</p>
+<p><code>/\w/g</code></p>
+<blockquote>
+<p><strong>|H|e|r|e| |a|r|e| |s|o|m|e| |w|o|r|d|s|</strong>: <strong>|o|n|e|</strong>, <strong>|t|w|o|</strong>, <strong>|t|h|r|e|e|</strong>, <strong>|F|O|U|R|</strong>, <strong>|1|2|3|</strong>, <strong>|4|5|6|</strong></p>
+</blockquote>
+<p><code>/\d/g</code></p>
+<blockquote>
+<p>Here are some words: one, two, three, FOUR, <strong>|1|2|3|</strong>, <strong>|4|5|6|</strong></p>
+</blockquote>
+<h3><span id="ký-tự-lặp">Ký tự lặp</span></h3>
+<p><code>\w</code> và <code>\d</code> ở trên tìm các ký tự một cách tách biệt, nghĩa là đối với từ <strong>Here</strong>, thực chất regex sẽ match tương ứng với <strong>H</strong>, <strong>e</strong>, <strong>r</strong> và <strong>e</strong>, tương tự <strong>123</strong> sẽ là <strong>1</strong>, <strong>2</strong>, <strong>3</strong>.</p>
+<p>Để có thể match toàn bộ từ hoặc số có nhiều chữ số ta sẽ dùng ký tự <code>*</code> hoặc <code>+</code></p>
+<p><code>+</code> sẽ match ký tự trước nó xuất hiện 1 hoặc nhiều lần.</p>
+<p><code>*</code> sẽ match ký tự trước nó xuất hiện 0 hoặc nhiều lần.</p>
+<p><code>/\w+/g</code></p>
+<blockquote>
+<p><strong>|Here| |are| |some| |words|</strong>: <strong>|one|</strong>, <strong>|two|</strong>, <strong>|three|</strong>, <strong>|FOUR|</strong>, <strong>|123|</strong>, <strong>|456|</strong></p>
+</blockquote>
+<p>Khác với khi không có <code>+</code>, ở đây regex sẽ match toàn bộ từ và số chứ không match riêng lẻ từng ký tự.</p>
+<h3><span id="tập-ký-tự">Tập ký tự</span></h3>
+<p>Chúng ta có thể tìm trong một tập ký tự giới hạn bằng cách cho chúng vào ngoặc vuông <code>[]</code></p>
+<p>Ví dụ: chỉ match những ký tự a hoặc b hoặc c <code>[abc]</code>, từ a đến c <code>[a-c]</code>, từ 0 đến 5 <code>[0-5]</code>, chỉ ký tự hoa <code>[A-Z]</code></p>
+<p><code>/[a-h]/g</code></p>
+<blockquote>
+<p>H<strong>e</strong>r<strong>e</strong> <strong>a</strong>r<strong>e</strong> som<strong>e</strong> wor<strong>d</strong>s: on<strong>e</strong>, two, t<strong>h</strong>r<strong>ee</strong>, FOUR, 123, 456</p>
+</blockquote>
+<h3><span id="ký-tự-đặc-biệt">Ký tự đặc biệt</span></h3>
+<p>Để sử dụng các ký tự đặc biệt trong regex chúng ta cần thêm <code>\</code> ở phía trước chúng: <code>\.</code>, <code>\(</code>, <code>\^</code> …</p>
+<p><code>/[\+\\]/g</code></p>
+<blockquote>
+<p>Some special symbols: [^.<strong>\+</strong>*]</p>
+</blockquote>
+<h3><span id="ký-tự-thay-thế">Ký tự thay thế</span></h3>
+<p>Cú pháp <code>a|b</code> sẽ match a hoặc b, ta có thể dùng <code>|</code> cho điều kiện phức tạp hơn như: <code>[a-f]|\d</code> sẽ match chữ cái từ a đến f <strong>hoặc</strong> chữ số</p>
+<p><code>/[a-f]+|\d+/g</code></p>
+<blockquote>
+<p>Wor<strong>d</strong>s: on<strong>e</strong>, two, thr<strong>ee</strong>, FOUR. An<strong>d</strong> num<strong>be</strong>rs: <strong>1</strong>, <strong>2</strong>, <strong>3</strong>, <strong>4</strong>, <strong>100</strong>, <strong>200</strong>, <strong>300</strong>, <strong>400</strong>.</p>
+</blockquote>
+<h3><span id="match-bất-cứ-ký-tự-nào-và-ký-tự-tùy-chọn">Match bất cứ ký tự nào và ký tự tùy chọn</span></h3>
+<p>Dấu <code>.</code> sẽ match tất cả ký tự</p>
+<p>Đặt <code>.*</code> sẽ match với chuỗi rỗng</p>
+<p>Đặt <code>.+</code> sẽ match toàn bộ dòng</p>
+<p>Đặt <code>?</code> sau ký tự sẽ biến ký tự đó thành tùy chọn - có thể có hoặc không. Ví dụ: <code>s?ing</code> sẽ match với <strong>sing</strong> và với phần <strong>ing</strong> của từ <strong>king</strong></p>
+<p><code>/s?ing/g</code></p>
+<blockquote>
+<p>The K<strong>ing</strong> is <strong>sing|ing</strong></p>
+</blockquote>
+<h3><span id="dòng-từ-và-khoẳng-trắng">Dòng, từ và khoẳng trắng</span></h3>
+<p>Ký tự <code>^</code> match với vị trí bắt đầu dòng và <code>$</code> tương ứng kết thúc dòng.</p>
+<p>Ví dụ: <code>^\w+</code> sẽ match từ đầu tiên của dòng và tương ứng <code>\w+$</code> sẽ match từ cuối dòng</p>
+<p>Ký tự <code>\b</code> sẽ match với giới hạn từ</p>
+<p>Ví dụ: <code>\w\b</code> sẽ tìm tất cả ký tự đứng đầu của từ, <code>\b\w</code> sẽ tìm ký tự đứng cuối từ</p>
+<p>Ký tự <code>\s</code> match với 1 khoảng trắng, để match một hay nhiều khoảng trắng ta có thể dùng <code>\s+</code></p>
+<h3><span id="số-lần-lặp">Số lần lặp</span></h3>
+<p>Chúng ta đã biết <code>+</code> và <code>*</code> cho ta lựa chọn match với ký tự lặp 0, 1 hoặc nhiều lần. Tuy nhiên việc giới hạn số lần lặp có thể xảy ra.</p>
+<p>Để làm điều này chúng ta sử dụng cặp ngoặc nhọn <code>{}</code> phía sau ký tự:</p>
+<ul>
+<li>
+<p><code>{1, 4}</code> lặp từ 1 đến 4 lần</p>
+</li>
+<li>
+<p><code>{4,}</code> lặp tối thiểu 4 lần</p>
+</li>
+<li>
+<p><code>{,4}</code> lặp tối đa 4 lần</p>
+</li>
+<li>
+<p><code>{4}</code> lặp đúng 5 lần</p>
+</li>
+</ul>
+<p>Match các từ có 4 ký tự trở lên</p>
+<p><code>/\b\w{4,}\b/g</code></p>
+<blockquote>
+<p>It is a <strong>long</strong> <strong>established</strong> <strong>fact</strong> <strong>that</strong> a <strong>reader</strong> <strong>will</strong> be <strong>distracted</strong> by the <strong>readable</strong> <strong>content</strong> of a <strong>page</strong> <strong>when</strong> <strong>looking</strong> at its <strong>layout</strong></p>
+</blockquote>
+<h3><span id="nhóm-và-thay-thế">Nhóm và thay thế</span></h3>
+<p>Ta có thể nhóm kết quả từ regex bằng cặp ngoặc tròn <code>()</code>, sau đó có thể dùng lại nhóm trong regex bằng cú pháp <code>\1</code> <code>\2</code> với 1, 2 là thứ tự xuất hiện của nhóm trong regex từ trái qua phải</p>
+<p>Ví dụ: <code>(\w+)\s\1</code> có thể dùng để match các từ bị lặp lại cách nhau bởi 1 dấu cách</p>
+<p><code>/(\w+)\s\1/g</code></p>
+<blockquote>
+<p><strong>me me</strong> <strong>you you</strong> he she it</p>
+</blockquote>
+<p>Ứng dụng quan trọng của việc nhóm là ta có thể sử dụng nhóm để thay thế với cú pháp <code>$1</code> <code>$2</code>, tương tự như trên 1 2 là thứ tự của nhóm.</p>
+<p>Ví dụ: chuyển đổi format <code>mm-dd-yyyy</code> thành <code>yyyy-mm-dd</code></p>
+<p><code>/(\d{2})-(\d{2})-(\d{4})/g replace with $3-$1-$2</code></p>
+<blockquote>
+<p>02-20-1994 -&gt; 1994-02-20</p>
+</blockquote>
+<h3><span id="lookaheads">Lookaheads</span></h3>
+<p>Khi muốn match ký tự với điều kiện theo sau nó là một ký tự hoặc chuỗi nào đó ta sử dụng cú pháp <code>(?=)</code></p>
+<p>Ví dụ: match ký tự đứng ngay trước dấm chấm <code>.</code></p>
+<p><code>/\w(?=\.)/g</code></p>
+<blockquote>
+<p>It is a long established fact tha<strong>t</strong>. A reader will be distracted by the readable content of a pag<strong>e</strong>. When looking at its layou<strong>t</strong>. The point of using Lorem Ipsum is that it has a more-or-less norma<strong>l</strong>. Distribution of letters, as opposed to using ‘Content here, content here’, making it look like readable Englis<strong>h</strong>.</p>
+</blockquote>
+<p>Ngược lại nếu muốn match ký tự không theo sau bởi gì đó ta dùng <code>(?!)</code></p>
+<p>Ví dụ: match các từ không đứng trước dấu chấm <code>.</code></p>
+<p><code>\w+(?!\.)\b</code></p>
+<blockquote>
+<p><strong>It is a long established fact</strong> that. <strong>A reader will be distracted by the readable content of a</strong> page. <strong>When looking at its</strong> layout. <strong>The point of using Lorem Ipsum is that it has a more-or-less</strong> normal. <strong>Distribution of letters, as opposed to using ‘Content here, content here’, making it look like readable</strong> English.</p>
+</blockquote>
+<h2><span id="ví-dụ-đơn-giản-làm-việc-với-regex">Ví dụ đơn giản làm việc với regex</span></h2>
+<p>Bài toán: regex validate email, thỏa mãn các yêu cầu sau</p>
+<ul>
+<li>Phải bắt đầu bằng chữ cái</li>
+<li>Chỉ bao gồm chữ cái, chữ số và 3 ký tự <code>- _ .</code></li>
+<li>Không chứa ký tự in hoa</li>
+</ul>
+<p>Ngoài ra các yêu cầu cơ bản của email là:</p>
+<ul>
+<li>Gồm 2 phần phân cách bởi dấu <code>@</code></li>
+<li>Phần tên miền chỉ bao gồm chữ cái, chữ số hoặc dấu gạch ngang <code>-</code></li>
+<li>Kết thúc bằng top-level domain</li>
+</ul>
+<p>Chúng ta tiến hành phân tích và viết regex:</p>
+<p>Bắt đầu bằng chữ cái và không có chữ in hoa</p>
+<ul>
+<li><code>^[a-z]</code></li>
+</ul>
+<p>Phần còn lại của địa chỉ có thể chứa nhiều chữ cái, chữ số và chỉ các ký tự <code>- _ .</code></p>
+<ul>
+<li><code>[a-z0-9-_.]+</code></li>
+</ul>
+<p>Kết thúc phần địa chỉ với ký tự <code>@</code></p>
+<ul>
+<li><code>@</code></li>
+</ul>
+<p>Tên miền chỉ bao gồm chữ cái, chữ số và ký tự <code>-</code>, tuy nhiên tên miền có thể có nhiều lớp nên cần thêm ký tự <code>.</code></p>
+<ul>
+<li><code>[a-z0-9-.]+</code></li>
+</ul>
+<p>Kết thúc bằng top-level domain: bắt đầu bằng dấu <code>.</code>, tiếp theo chỉ bao gồm chữ cái, cần ít nhất 2 ký tự trở lên, và là phần kết thúc của chuỗi</p>
+<ul>
+<li><code>\.[a-z]{2,}$</code></li>
+</ul>
+<p>Như vậy kết hợp các thành phần lại với nhau ta được regex hoàn chỉnh</p>
+<p><code>/^[a-z][a-z0-9-_.]+@[a-z0-9-.]+\.[a-z]{2,}$/g</code></p>
+<blockquote>
+<p><strong><a href="mailto:thanh@gmail.com" target="_blank" rel="noopener">thanh@gmail.com</a> (matched)</strong></p>
+<p><strong><a href="mailto:septeni69@septeni-technology.jp" target="_blank" rel="noopener">septeni69@septeni-technology.jp</a> (matched)</strong></p>
+<p><strong><a href="mailto:valid.email@lx.us.com" target="_blank" rel="noopener">valid.email@lx.us.com</a> (matched)</strong></p>
+<p>space is not <a href="mailto:allowed@gmail.com" target="_blank" rel="noopener">allowed@gmail.com</a> (not-matched)</p>
+<p><a href="mailto:1startwithnumber@mail.com" target="_blank" rel="noopener">1startwithnumber@mail.com</a> (not-matched)</p>
+<p>not_contains_at_symbol.com (not-matched)</p>
+<p>domainiswrong@hotmail (not-matched)</p>
+<p><a href="mailto:UpperCaseIsWrong@gmail.com" target="_blank" rel="noopener">UpperCaseIsWrong@gmail.com</a> (not-matched)</p>
+</blockquote>
+<p>Trên đây là giới thiệu cơ bản về regex, hi vọng có thể giúp các bạn tiếp cận được ý tưởng về regex ở mức khởi đầu.</p>
+<h3><span id="tham-khảo">Tham khảo</span></h3>
+<p><a href="https://www.rexegg.com/" target="_blank" rel="noopener">https://www.rexegg.com/</a></p>
+<p><a href="http://regextutorials.com/" target="_blank" rel="noopener">http://regextutorials.com/</a></p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                    
+                </ul>
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">Điều gì khiến bạn quan tâm tới Regex</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">Những kiến thức đầu tiên về Regex</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">Các ký tự đơn giản</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text">Chữ cái và chữ số</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">2.3.</span> <span class="toc-nav-text">Ký tự lặp</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">2.4.</span> <span class="toc-nav-text">Tập ký tự</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">2.5.</span> <span class="toc-nav-text">Ký tự đặc biệt</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">2.6.</span> <span class="toc-nav-text">Ký tự thay thế</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">2.7.</span> <span class="toc-nav-text">Match bất cứ ký tự nào và ký tự tùy chọn</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">2.8.</span> <span class="toc-nav-text">Dòng, từ và khoẳng trắng</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">2.9.</span> <span class="toc-nav-text">Số lần lặp</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">2.10.</span> <span class="toc-nav-text">Nhóm và thay thế</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">2.11.</span> <span class="toc-nav-text">Lookaheads</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">Ví dụ đơn giản làm việc với regex</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text">Tham khảo</span></a></li></ol></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#regex" title="regex">regex</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="#" target="_blank">It Helps SEO</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank" href="https://www.facebook.com/zionnar">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/midautt">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://www.linkedin.com/in/thanhnv244">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Thanh Nguyen 2018 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    re-Ported by <a href="http://beantech.org">BeanTech</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=YenYuHsuan&repo=hexo-theme-beantech&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://midautt.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="http://midautt.github.io/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
